@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="id" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinTrack - Pengelolaan Keuangan Pribadi</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="img/logo.png" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Sora:wght@600;700&display=swap"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- login -->
+    <div id="loginPage" class="ft-login-page">
+      <div class="ft-login-card">
+        <div
+          class="ft-logo"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+          "
+        >
+          <span
+            class="ft-logo-text"
+            style="font-size: 36px; font-weight: 800; text-align: center"
+          >
+            Fin<span style="color: var(--primary)">Track</span>
+          </span>
+        </div>
+        <p class="ft-login-sub">Kelola keuanganmu dengan mudah dan cerdas</p>
+        <div class="ft-login-features">
+          <div class="ft-login-feature">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            <span>Catat Transaksi</span>
+          </div>
+          <div class="ft-login-feature">
+            <i class="fa-solid fa-wallet"></i>
+            <span>Atur Anggaran</span>
+          </div>
+          <div class="ft-login-feature">
+            <i class="fa-solid fa-bullseye"></i>
+            <span>Raih Tujuan</span>
+          </div>
+          <div class="ft-login-feature">
+            <i class="fa-solid fa-chart-bar"></i>
+            <span>Lihat Laporan</span>
+          </div>
+        </div>
+        <div
+          id="g_id_onload"
+          data-client_id="113396980708-qsi0k75ruo9jmm40abcrhclt2pbjo2s6.apps.googleusercontent.com"
+          data-callback="handleGoogleLogin"
+          data-auto_prompt="false"
+        ></div>
+        <div
+          class="g_id_signin ft-google-btn"
+          data-type="standard"
+          data-size="large"
+          data-theme="outline"
+          data-text="signin_with"
+          data-shape="rectangular"
+          data-logo_alignment="left"
+          data-width="280"
+        ></div>
+        <p class="ft-login-note">
+          <i class="fa-solid fa-lock"></i>
+          Data tersimpan aman di browser kamu
+        </p>
+      </div>
+    </div>
+
+    <!-- setelah login -->
+    <div id="appPage" style="display: none">
+      <!-- sidebar -->
+      <aside class="ft-sidebar" id="sidebar">
+        <div class="ft-sidebar-header">
+          <div class="ft-logo">
+            <span class="ft-logo-text">Fin<span>Track</span></span>
+          </div>
+          <button class="ft-icon-btn d-lg-none" id="sidebarClose">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="ft-sidebar-user">
+          <img class="ft-avatar" id="userAvatar" src="" alt="Avatar" />
+          <div class="ft-user-info">
+            <span class="ft-user-name" id="userName">-</span>
+            <span class="ft-user-email" id="userEmail">-</span>
+          </div>
+        </div>
+        <nav class="ft-nav">
+          <div class="ft-nav-label">Menu Utama</div>
+          <ul>
+            <li>
+              <a class="ft-nav-link active" data-page="dashboard"
+                ><i class="fa-solid fa-house"></i><span>Dashboard</span></a
+              >
+            </li>
+            <li>
+              <a class="ft-nav-link" data-page="transaksi"
+                ><i class="fa-solid fa-arrow-right-arrow-left"></i
+                ><span>Transaksi</span></a
+              >
+            </li>
+            <li>
+              <a class="ft-nav-link" data-page="anggaran"
+                ><i class="fa-solid fa-wallet"></i><span>Anggaran</span></a
+              >
+            </li>
+            <li>
+              <a class="ft-nav-link" data-page="goals"
+                ><i class="fa-solid fa-bullseye"></i
+                ><span>Tujuan Keuangan</span></a
+              >
+            </li>
+            <li>
+              <a class="ft-nav-link" data-page="laporan"
+                ><i class="fa-solid fa-chart-bar"></i><span>Laporan</span></a
+              >
+            </li>
+          </ul>
+          <div class="ft-nav-label">Lainnya</div>
+          <ul>
+            <li>
+              <a class="ft-nav-link" data-page="kategori"
+                ><i class="fa-solid fa-tags"></i><span>Kategori</span></a
+              >
+            </li>
+            <li>
+              <a class="ft-nav-link" data-page="pengaturan"
+                ><i class="fa-solid fa-gear"></i><span>Pengaturan</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+        <div class="ft-sidebar-footer">
+          <button class="ft-theme-btn" id="themeToggle">
+            <i class="fa-solid fa-moon" id="themeIcon"></i>
+            <span id="themeLabel">Dark Mode</span>
+          </button>
+          <button class="ft-logout-btn" id="btnLogout">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>Keluar</span>
+          </button>
+        </div>
+      </aside>
+
+      <div class="ft-overlay" id="overlay"></div>
+      <!-- topbar -->
+      <div class="ft-main">
+        <header class="ft-topbar">
+          <div class="d-flex align-items-center gap-2">
+            <button class="ft-icon-btn d-lg-none" id="sidebarOpen">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+            <span class="ft-page-title" id="pageTitle">Dashboard</span>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <span class="ft-topbar-date" id="topbarDate"></span>
+            <span class="ft-currency-badge" id="topbarCurrency">IDR</span>
+          </div>
+        </header>
+
+        <main class="ft-content">
+          <!-- dashboard -->
+          <section class="ft-page active" id="page-dashboard">
+            <div class="row g-3 mb-4">
+              <div class="col-6 col-xl-3">
+                <div class="ft-card ft-card-income">
+                  <div class="ft-card-icon">
+                    <i class="fa-solid fa-arrow-down"></i>
+                  </div>
+                  <div>
+                    <div class="ft-card-label">Pemasukan</div>
+                    <div class="ft-card-value" id="dash-income">Rp 0</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-xl-3">
+                <div class="ft-card ft-card-expense">
+                  <div class="ft-card-icon">
+                    <i class="fa-solid fa-arrow-up"></i>
+                  </div>
+                  <div>
+                    <div class="ft-card-label">Pengeluaran</div>
+                    <div class="ft-card-value" id="dash-expense">Rp 0</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-xl-3">
+                <div class="ft-card ft-card-balance">
+                  <div class="ft-card-icon">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                  </div>
+                  <div>
+                    <div class="ft-card-label">Saldo Bersih</div>
+                    <div class="ft-card-value" id="dash-balance">Rp 0</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-xl-3">
+                <div class="ft-card ft-card-saving">
+                  <div class="ft-card-icon">
+                    <i class="fa-solid fa-piggy-bank"></i>
+                  </div>
+                  <div>
+                    <div class="ft-card-label">Total Tabungan</div>
+                    <div class="ft-card-value" id="dash-saving">Rp 0</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+              <div class="col-12 col-lg-8">
+                <div class="ft-panel">
+                  <div class="ft-panel-header">
+                    <span class="ft-panel-title">Pemasukan vs Pengeluaran</span>
+                    <span class="ft-panel-sub">6 Bulan Terakhir</span>
+                  </div>
+                  <div class="ft-panel-body">
+                    <canvas id="chartBar" height="110"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-lg-4">
+                <div class="ft-panel h-100">
+                  <div class="ft-panel-header">
+                    <span class="ft-panel-title">Pengeluaran</span>
+                    <span class="ft-panel-sub">Per Kategori</span>
+                  </div>
+                  <div
+                    class="ft-panel-body d-flex flex-column align-items-center"
+                  >
+                    <canvas id="chartDonut" width="180" height="180"></canvas>
+                    <div id="donutLegend" class="ft-chart-legend mt-2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-12 col-lg-5">
+                <div class="ft-panel">
+                  <div class="ft-panel-header">
+                    <span class="ft-panel-title">Status Anggaran</span>
+                    <a class="ft-panel-link" data-page="anggaran"
+                      >Lihat Semua</a
+                    >
+                  </div>
+                  <div class="ft-panel-body" id="dash-budget-list">
+                    <div class="ft-empty">
+                      <i class="fa-solid fa-wallet"></i>
+                      <p>Belum ada anggaran</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-lg-7">
+                <div class="ft-panel">
+                  <div class="ft-panel-header">
+                    <span class="ft-panel-title">Transaksi Terbaru</span>
+                    <a class="ft-panel-link" data-page="transaksi"
+                      >Lihat Semua</a
+                    >
+                  </div>
+                  <div class="p-0" id="dash-recent-list">
+                    <div class="ft-empty">
+                      <i class="fa-solid fa-receipt"></i>
+                      <p>Belum ada transaksi</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- transaksi -->
+          <section class="ft-page" id="page-transaksi">
+            <div class="ft-actions mb-4">
+              <div class="ft-filters">
+                <select class="ft-select" id="filterJenis">
+                  <option value="">Semua Jenis</option>
+                  <option value="pemasukan">Pemasukan</option>
+                  <option value="pengeluaran">Pengeluaran</option>
+                </select>
+                <select class="ft-select" id="filterKat"></select>
+                <input type="month" class="ft-input" id="filterBulan" />
+              </div>
+              <div class="d-flex gap-2">
+                <button class="ft-btn ft-btn-outline" id="btnExportCSV">
+                  <i class="fa-solid fa-file-csv"></i> Export
+                </button>
+                <button
+                  class="ft-btn ft-btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalTrx"
+                >
+                  <i class="fa-solid fa-plus"></i> Tambah
+                </button>
+              </div>
+            </div>
+            <div class="ft-panel">
+              <div class="ft-table-wrap">
+                <table class="ft-table">
+                  <thead>
+                    <tr>
+                      <th>Tanggal</th>
+                      <th>Deskripsi</th>
+                      <th>Kategori</th>
+                      <th>Jenis</th>
+                      <th class="text-end">Nominal</th>
+                      <th class="text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="trxBody"></tbody>
+                </table>
+              </div>
+              <div id="trxPagination" class="ft-pagination"></div>
+            </div>
+          </section>
+
+          <!-- anggaran -->
+          <section class="ft-page" id="page-anggaran">
+            <div class="ft-actions mb-4">
+              <input type="month" class="ft-input" id="filterBulanAnggaran" />
+              <button
+                class="ft-btn ft-btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalAnggaran"
+              >
+                <i class="fa-solid fa-plus"></i> Tambah
+              </button>
+            </div>
+            <div class="row g-3" id="anggaranGrid"></div>
+          </section>
+
+          <!-- tujuan keuangan -->
+          <section class="ft-page" id="page-goals">
+            <div class="ft-actions mb-4">
+              <div></div>
+              <button
+                class="ft-btn ft-btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalGoal"
+              >
+                <i class="fa-solid fa-plus"></i> Tambah Tujuan
+              </button>
+            </div>
+            <div class="row g-3" id="goalsGrid"></div>
+          </section>
+
+          <!-- laporan -->
+          <section class="ft-page" id="page-laporan">
+            <div class="ft-actions mb-4">
+              <div class="ft-filters">
+                <input type="month" class="ft-input" id="lapDari" />
+                <span style="color: var(--text-muted); font-size: 13px"
+                  >s/d</span
+                >
+                <input type="month" class="ft-input" id="lapSampai" />
+                <button class="ft-btn ft-btn-outline" id="btnFilterLap">
+                  <i class="fa-solid fa-filter"></i> Tampilkan
+                </button>
+              </div>
+              <button class="ft-btn ft-btn-outline" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Cetak
+              </button>
+            </div>
+            <div class="row g-3 mb-4">
+              <div class="col-12 col-md-4">
+                <div class="ft-panel text-center">
+                  <div class="ft-panel-body">
+                    <div class="ft-report-icon income">
+                      <i class="fa-solid fa-arrow-down"></i>
+                    </div>
+                    <div class="ft-report-label">Total Pemasukan</div>
+                    <div class="ft-report-value" id="lap-income">Rp 0</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="ft-panel text-center">
+                  <div class="ft-panel-body">
+                    <div class="ft-report-icon expense">
+                      <i class="fa-solid fa-arrow-up"></i>
+                    </div>
+                    <div class="ft-report-label">Total Pengeluaran</div>
+                    <div class="ft-report-value" id="lap-expense">Rp 0</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="ft-panel text-center">
+                  <div class="ft-panel-body">
+                    <div class="ft-report-icon balance">
+                      <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <div class="ft-report-label">Selisih</div>
+                    <div class="ft-report-value" id="lap-balance">Rp 0</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-12 col-lg-7">
+                <div class="ft-panel">
+                  <div class="ft-panel-header">
+                    <span class="ft-panel-title">Tren Keuangan</span>
+                  </div>
+                  <div class="ft-panel-body">
+                    <canvas id="chartLine" height="120"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-lg-5">
+                <div class="ft-panel">
+                  <div class="ft-panel-header">
+                    <span class="ft-panel-title">Distribusi Pengeluaran</span>
+                  </div>
+                  <div class="ft-panel-body">
+                    <canvas id="chartPie" height="200"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- kategori -->
+          <section class="ft-page" id="page-kategori">
+            <div class="ft-actions mb-4">
+              <div></div>
+              <button
+                class="ft-btn ft-btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalKategori"
+              >
+                <i class="fa-solid fa-plus"></i> Tambah Kategori
+              </button>
+            </div>
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <div class="ft-panel">
+                  <div class="ft-panel-header">
+                    <span class="ft-panel-title"
+                      ><i class="fa-solid fa-arrow-down text-success me-2"></i
+                      >Pemasukan</span
+                    >
+                  </div>
+                  <div class="ft-panel-body" id="katIncomeList"></div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="ft-panel">
+                  <div class="ft-panel-header">
+                    <span class="ft-panel-title"
+                      ><i class="fa-solid fa-arrow-up text-danger me-2"></i
+                      >Pengeluaran</span
+                    >
+                  </div>
+                  <div class="ft-panel-body" id="katExpenseList"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- pengaturan -->
+          <section class="ft-page" id="page-pengaturan">
+            <div class="row g-3">
+              <div class="col-12 col-lg-6">
+                <div class="ft-panel">
+                  <div class="ft-panel-header">
+                    <span class="ft-panel-title">Preferensi</span>
+                  </div>
+                  <div class="ft-panel-body">
+                    <div class="ft-form-group">
+                      <label class="ft-label">Mata Uang</label>
+                      <select class="ft-select w-100" id="settingMataUang">
+                        <option value="IDR">IDR — Rupiah Indonesia</option>
+                        <option value="USD">USD — US Dollar</option>
+                        <option value="MYR">MYR — Ringgit Malaysia</option>
+                        <option value="SGD">SGD — Singapore Dollar</option>
+                      </select>
+                    </div>
+                    <button
+                      class="ft-btn ft-btn-primary w-100"
+                      id="btnSaveSetting"
+                    >
+                      <i class="fa-solid fa-floppy-disk"></i> Simpan
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-lg-6">
+                <div class="ft-panel">
+                  <div class="ft-panel-header">
+                    <span class="ft-panel-title">Data & Backup</span>
+                  </div>
+                  <div class="ft-panel-body">
+                    <div class="ft-setting-item">
+                      <div>
+                        <div class="ft-setting-title">Export Data</div>
+                        <div class="ft-setting-desc">
+                          Unduh semua data sebagai JSON
+                        </div>
+                      </div>
+                      <button class="ft-btn ft-btn-outline" id="btnExportData">
+                        <i class="fa-solid fa-download"></i> Export
+                      </button>
+                    </div>
+                    <div class="ft-setting-item">
+                      <div>
+                        <div class="ft-setting-title">Import Data</div>
+                        <div class="ft-setting-desc">
+                          Pulihkan dari file JSON
+                        </div>
+                      </div>
+                      <label class="ft-btn ft-btn-outline" for="inputImport"
+                        ><i class="fa-solid fa-upload"></i> Import</label
+                      >
+                      <input
+                        type="file"
+                        id="inputImport"
+                        accept=".json"
+                        style="display: none"
+                      />
+                    </div>
+                    <div class="ft-setting-item">
+                      <div>
+                        <div
+                          class="ft-setting-title"
+                          style="color: var(--danger)"
+                        >
+                          Reset Data
+                        </div>
+                        <div class="ft-setting-desc">
+                          Hapus semua data permanen
+                        </div>
+                      </div>
+                      <button class="ft-btn ft-btn-danger" id="btnResetData">
+                        <i class="fa-solid fa-trash"></i> Reset
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- notif -->
+    <div id="toastContainer" class="ft-toast-container"></div>
+
+    <!-- tambah transaksi -->
+    <div class="modal fade" id="modalTrx" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content ft-modal">
+          <div class="ft-modal-header">
+            <span class="ft-modal-title" id="modalTrxTitle"
+              >Tambah Transaksi</span
+            >
+            <button class="ft-icon-btn" data-bs-dismiss="modal">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="ft-modal-body">
+            <input type="hidden" id="trxId" />
+            <div class="ft-tab-switch mb-3">
+              <button class="ft-tab active" data-type="pengeluaran">
+                <i class="fa-solid fa-arrow-up"></i> Pengeluaran
+              </button>
+              <button class="ft-tab" data-type="pemasukan">
+                <i class="fa-solid fa-arrow-down"></i> Pemasukan
+              </button>
+            </div>
+            <input type="hidden" id="trxJenis" value="pengeluaran" />
+            <div class="ft-form-group">
+              <label class="ft-label">Nominal *</label>
+              <div class="ft-input-group">
+                <span class="ft-prefix" id="currencyPrefix">Rp</span>
+                <input
+                  type="number"
+                  class="ft-input"
+                  id="trxNominal"
+                  placeholder="0"
+                  min="0"
+                />
+              </div>
+            </div>
+            <div class="ft-form-group">
+              <label class="ft-label">Kategori *</label>
+              <select class="ft-select w-100" id="trxKategori"></select>
+            </div>
+            <div class="ft-form-group">
+              <label class="ft-label">Tanggal *</label>
+              <input type="date" class="ft-input" id="trxTanggal" />
+            </div>
+            <div class="ft-form-group">
+              <label class="ft-label">Catatan</label>
+              <input
+                type="text"
+                class="ft-input"
+                id="trxCatatan"
+                placeholder="Opsional..."
+              />
+            </div>
+          </div>
+          <div class="ft-modal-footer">
+            <button class="ft-btn ft-btn-ghost" data-bs-dismiss="modal">
+              Batal
+            </button>
+            <button class="ft-btn ft-btn-primary" id="btnSaveTrx">
+              <i class="fa-solid fa-floppy-disk"></i> Simpan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- tambah anggaran -->
+    <div class="modal fade" id="modalAnggaran" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content ft-modal">
+          <div class="ft-modal-header">
+            <span class="ft-modal-title" id="modalAnggaranTitle"
+              >Tambah Anggaran</span
+            >
+            <button class="ft-icon-btn" data-bs-dismiss="modal">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="ft-modal-body">
+            <input type="hidden" id="anggaranId" />
+            <div class="ft-form-group">
+              <label class="ft-label">Kategori *</label>
+              <select class="ft-select w-100" id="anggaranKat"></select>
+            </div>
+            <div class="ft-form-group">
+              <label class="ft-label">Batas Anggaran *</label>
+              <div class="ft-input-group">
+                <span class="ft-prefix">Rp</span>
+                <input
+                  type="number"
+                  class="ft-input"
+                  id="anggaranLimit"
+                  placeholder="0"
+                />
+              </div>
+            </div>
+            <div class="ft-form-group">
+              <label class="ft-label">Bulan *</label>
+              <input type="month" class="ft-input" id="anggaranBulan" />
+            </div>
+          </div>
+          <div class="ft-modal-footer">
+            <button class="ft-btn ft-btn-ghost" data-bs-dismiss="modal">
+              Batal
+            </button>
+            <button class="ft-btn ft-btn-primary" id="btnSaveAnggaran">
+              <i class="fa-solid fa-floppy-disk"></i> Simpan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- tambah tujuan keuangan -->
+    <div class="modal fade" id="modalGoal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content ft-modal">
+          <div class="ft-modal-header">
+            <span class="ft-modal-title" id="modalGoalTitle"
+              >Tambah Tujuan</span
+            >
+            <button class="ft-icon-btn" data-bs-dismiss="modal">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="ft-modal-body">
+            <input type="hidden" id="goalId" />
+            <div class="ft-form-group">
+              <label class="ft-label">Nama Tujuan *</label>
+              <input
+                type="text"
+                class="ft-input"
+                id="goalNama"
+                placeholder="Contoh: Beli Laptop..."
+              />
+            </div>
+            <div class="ft-form-group">
+              <label class="ft-label">Target *</label>
+              <div class="ft-input-group">
+                <span class="ft-prefix">Rp</span>
+                <input
+                  type="number"
+                  class="ft-input"
+                  id="goalTarget"
+                  placeholder="0"
+                />
+              </div>
+            </div>
+            <div class="ft-form-group">
+              <label class="ft-label">Sudah Terkumpul</label>
+              <div class="ft-input-group">
+                <span class="ft-prefix">Rp</span>
+                <input
+                  type="number"
+                  class="ft-input"
+                  id="goalTerkumpul"
+                  placeholder="0"
+                />
+              </div>
+            </div>
+            <div class="ft-form-group">
+              <label class="ft-label">Deadline</label>
+              <input type="date" class="ft-input" id="goalDeadline" />
+            </div>
+          </div>
+          <div class="ft-modal-footer">
+            <button class="ft-btn ft-btn-ghost" data-bs-dismiss="modal">
+              Batal
+            </button>
+            <button class="ft-btn ft-btn-primary" id="btnSaveGoal">
+              <i class="fa-solid fa-floppy-disk"></i> Simpan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- tambah dana pada tujuan keuangan -->
+    <div class="modal fade" id="modalDana" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content ft-modal">
+          <div class="ft-modal-header">
+            <span class="ft-modal-title">Tambah Dana</span>
+            <button class="ft-icon-btn" data-bs-dismiss="modal">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="ft-modal-body">
+            <input type="hidden" id="danaGoalId" />
+            <div class="ft-form-group">
+              <label class="ft-label">Jumlah *</label>
+              <div class="ft-input-group">
+                <span class="ft-prefix">Rp</span>
+                <input
+                  type="number"
+                  class="ft-input"
+                  id="danaJumlah"
+                  placeholder="0"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="ft-modal-footer">
+            <button class="ft-btn ft-btn-ghost" data-bs-dismiss="modal">
+              Batal
+            </button>
+            <button class="ft-btn ft-btn-primary" id="btnSaveDana">
+              <i class="fa-solid fa-plus"></i> Tambah
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- tambah kategori -->
+    <div class="modal fade" id="modalKategori" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content ft-modal">
+          <div class="ft-modal-header">
+            <span class="ft-modal-title" id="modalKatTitle"
+              >Tambah Kategori</span
+            >
+            <button class="ft-icon-btn" data-bs-dismiss="modal">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="ft-modal-body">
+            <input type="hidden" id="katId" />
+            <div class="ft-form-group">
+              <label class="ft-label">Nama *</label>
+              <input
+                type="text"
+                class="ft-input"
+                id="katNama"
+                placeholder="Nama kategori..."
+              />
+            </div>
+            <div class="ft-form-group">
+              <label class="ft-label">Jenis *</label>
+              <select class="ft-select w-100" id="katJenis">
+                <option value="pengeluaran">Pengeluaran</option>
+                <option value="pemasukan">Pemasukan</option>
+              </select>
+            </div>
+            <div class="ft-form-group">
+              <label class="ft-label">Ikon (Font Awesome class)</label>
+              <input
+                type="text"
+                class="ft-input"
+                id="katIkon"
+                placeholder="contoh: fa-solid fa-tags"
+              />
+            </div>
+            <div class="ft-form-group">
+              <label class="ft-label">Warna</label>
+              <input
+                type="color"
+                class="ft-input"
+                id="katWarna"
+                value="#10b981"
+                style="height: 44px; padding: 4px"
+              />
+            </div>
+          </div>
+          <div class="ft-modal-footer">
+            <button class="ft-btn ft-btn-ghost" data-bs-dismiss="modal">
+              Batal
+            </button>
+            <button class="ft-btn ft-btn-primary" id="btnSaveKat">
+              <i class="fa-solid fa-floppy-disk"></i> Simpan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- hapus -->
+    <div class="modal fade" id="modalConfirm" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content ft-modal">
+          <div class="ft-modal-body text-center py-4">
+            <div class="ft-confirm-icon">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h6 class="mt-3 mb-1" id="confirmTitle">Yakin ingin menghapus?</h6>
+            <p class="text-muted small mb-0" id="confirmMsg">
+              Data tidak dapat dikembalikan.
+            </p>
+          </div>
+          <div class="ft-modal-footer justify-content-center">
+            <button class="ft-btn ft-btn-ghost" data-bs-dismiss="modal">
+              Batal
+            </button>
+            <button class="ft-btn ft-btn-danger" id="btnConfirmOk">
+              <i class="fa-solid fa-trash"></i> Hapus
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="js/chart.min.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/modules.js"></script>
+    <script src="js/app.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </body>
+</html>

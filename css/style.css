@@ -163,7 +163,7 @@ body {
   flex-direction: column;
   z-index: 1000;
   transition: transform var(--tr);
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .ft-main {
@@ -240,6 +240,8 @@ body {
 .ft-nav {
   padding: 14px 10px;
   flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .ft-nav-label {
   font-size: 10px;
@@ -290,6 +292,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex-shrink: 0;
 }
 
 .ft-theme-btn,

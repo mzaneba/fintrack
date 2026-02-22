@@ -163,7 +163,7 @@ body {
   flex-direction: column;
   z-index: 1000;
   transition: transform var(--tr);
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .ft-main {
@@ -240,8 +240,6 @@ body {
 .ft-nav {
   padding: 14px 10px;
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 .ft-nav-label {
   font-size: 10px;
@@ -287,12 +285,15 @@ body {
 }
 
 .ft-sidebar-footer {
-  padding: 12px 10px;
-  border-top: 1px solid var(--border-soft);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex-shrink: 0;
+  display: none;
+}
+.ft-nav-logout:hover {
+  background: #fee2e2 !important;
+  color: var(--danger) !important;
+}
+[data-theme="dark"] .ft-nav-logout:hover {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #f87171 !important;
 }
 
 .ft-theme-btn,
